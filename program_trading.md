@@ -8,7 +8,18 @@ You are an AI trading strategy researcher optimizing BTC/USDT trading strategies
 2. **One mutable file**: You only edit `strategy.py`
 3. **Keep or revert**: If the new version improves the objective metric, keep it; otherwise revert
 4. **Git-based**: All changes are tracked via git commits
-5. **Validation only**: Evaluate on validation data (Nov 2023 - Mar 2024), not test data
+5. **Validation only**: Evaluate on validation data (Jan 2023 - Jan 2024), not test data
+
+**IMPORTANT TIME PERIODS (UPDATED):**
+- **Training**: Jan 2021 - Jan 2023 (2 years: bear market + recovery)
+- **Validation**: Jan 2023 - Jan 2024 (1 year: mixed bear/bull transition) ← **Optimization target**
+- **Testing**: Jan 2024 - Apr 2024 (3 months: pure bull market) ← **Final evaluation**
+
+**Why this split is better:**
+- Training includes **bear market patterns** (2021-2022 crypto winter)
+- Validation tests **regime transitions** (bear → bull adaptation)
+- Testing in **current bull market** (real-world application)
+- Better for **universal strategy** that works in both bull and bear markets
 
 ## Objective Metric
 **Primary objective**: Maximize Sharpe Ratio (risk-adjusted returns)
@@ -29,30 +40,51 @@ You are an AI trading strategy researcher optimizing BTC/USDT trading strategies
 
 ### 1. Ichimoku Parameters (`PARAMETERS` dictionary)
 ```python
-# Period adjustments
-'tenkan_period': 9,      # Try: 7, 8, 9, 10, 12, 14
-'kijun_period': 26,      # Try: 20, 22, 24, 26, 28, 30
-'senkou_b_period': 52,   # Try: 40, 44, 48, 52, 56, 60
-'displacement': 26,      # Try: 22, 24, 26, 28, 30
+# Trading mode (NEW - for market regime adaptation)
+'enable_short': False,        # Try: True/False - enable short selling for bear markets
+'adapt_to_regime': False,     # Try: True/False - adapt parameters based on market regime
 
-# Rule toggles (True/False)
+# Period adjustments
+'tenkan_period': 9,           # Try: 7, 8, 9, 10, 12, 14
+'kijun_period': 26,           # Try: 20, 22, 24, 26, 28, 30
+'senkou_b_period': 52,        # Try: 40, 44, 48, 52, 56, 60
+'displacement': 26,           # Try: 22, 24, 26, 28, 30
+
+# Long entry rules (for bull markets)
 'require_price_above_cloud': True,
 'require_tenkan_above_kijun': True,
 'require_chikou_above_price': False,
-'exit_on_death_cross': True,
-'exit_price_below_kijun': False,
-'exit_price_below_cloud': True,
-'require_macd_bullish': False,
-'require_volume_above_avg': True,
-
-# Threshold values
 'min_cloud_width_pct': 1.0,   # Try: 0.5, 1.0, 1.5, 2.0, 3.0
+
+# Short entry rules (if enable_short=True, for bear markets)
+'require_price_below_cloud': False,   # Try: True/False
+'require_tenkan_below_kijun': False,  # Try: True/False
+'require_chikou_below_price': False,  # Try: True/False
+'max_cloud_width_pct': 5.0,           # Try: 3.0, 5.0, 7.0, 10.0
+
+# Exit rules
+'exit_on_death_cross': True,          # Exit long on death cross
+'exit_on_golden_cross': False,        # Exit short on golden cross
+'exit_price_below_kijun': False,      # Exit long if price below Kijun
+'exit_price_above_kijun': False,      # Exit short if price above Kijun
+'exit_price_below_cloud': True,       # Exit long if price below cloud
+'exit_price_above_cloud': False,      # Exit short if price above cloud
+
+# Risk management
 'stop_loss_pct': 5.0,         # Try: 2.0, 3.0, 5.0, 7.0, 10.0
 'take_profit_pct': 10.0,      # Try: 5.0, 8.0, 10.0, 12.0, 15.0
 'trailing_stop_pct': 3.0,     # Try: 1.0, 2.0, 3.0, 4.0, 5.0
+
+# Position sizing
+'position_size_pct': 10.0,    # Try: 5.0, 10.0, 15.0, 20.0, 25.0
+'max_positions': 1,
+
+# Filter conditions
 'min_rsi': 30,                # Try: 20, 25, 30, 35, 40
 'max_rsi': 70,                # Try: 60, 65, 70, 75, 80
-'position_size_pct': 10.0,    # Try: 5.0, 10.0, 15.0, 20.0, 25.0
+'require_macd_bullish': False,
+'require_macd_bearish': False, # For short entries
+'require_volume_above_avg': True,
 ```
 
 ### 2. Trading Logic (`generate_signals()` function)

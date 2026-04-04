@@ -28,16 +28,29 @@ PARAMETERS = {
     'senkou_b_period': 52,   # Leading Span B period
     'displacement': 26,      # Shift period
     
-    # Entry rules
+    # Trading mode (AI agent can modify)
+    'enable_short': False,   # Enable short selling for bear markets
+    'adapt_to_regime': False, # Adapt parameters based on market regime
+    
+    # Long entry rules (for bull markets)
     'require_price_above_cloud': True,
     'require_tenkan_above_kijun': True,
     'require_chikou_above_price': False,
     'min_cloud_width_pct': 1.0,  # Minimum cloud width as % of price
     
+    # Short entry rules (if enable_short=True, for bear markets)
+    'require_price_below_cloud': False,
+    'require_tenkan_below_kijun': False,
+    'require_chikou_below_price': False,
+    'max_cloud_width_pct': 5.0,  # Maximum cloud width for short entries
+    
     # Exit rules
-    'exit_on_death_cross': True,
-    'exit_price_below_kijun': False,
-    'exit_price_below_cloud': True,
+    'exit_on_death_cross': True,      # Exit long on death cross
+    'exit_on_golden_cross': False,    # Exit short on golden cross
+    'exit_price_below_kijun': False,  # Exit long if price below Kijun
+    'exit_price_above_kijun': False,  # Exit short if price above Kijun
+    'exit_price_below_cloud': True,   # Exit long if price below cloud
+    'exit_price_above_cloud': False,  # Exit short if price above cloud
     
     # Risk management
     'stop_loss_pct': 5.0,    # 5% stop loss
@@ -52,6 +65,7 @@ PARAMETERS = {
     'min_rsi': 30,           # Minimum RSI for buy
     'max_rsi': 70,           # Maximum RSI for buy
     'require_macd_bullish': False,
+    'require_macd_bearish': False,  # For short entries
     'require_volume_above_avg': True,
 }
 

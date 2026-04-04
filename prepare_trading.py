@@ -34,11 +34,26 @@ from ta.volume import VolumeWeightedAveragePrice
 # ---------------------------------------------------------------------------
 
 TIME_BUDGET = 300  # 5-minute backtest budget
-TRAIN_START = "2021-11-01"
-TRAIN_END = "2023-11-01"
-VAL_START = "2023-11-01"
-VAL_END = "2024-03-01"
-TEST_START = "2024-03-01"
+
+# Updated time periods for better market regime coverage
+# Original: Train (Nov 2021 - Nov 2023), Val (Nov 2023 - Mar 2024), Test (Mar 2024 - Apr 2024)
+# Problem: Test period only in bull market
+#
+# Updated splits:
+# Train: Jan 2021 - Jan 2023 (2 years: bear market + recovery)
+# Val: Jan 2023 - Jan 2024 (1 year: mixed bear/bull transition)
+# Test: Jan 2024 - Apr 2024 (3 months: pure bull market for final test)
+#
+# This gives us:
+# - Training on bear market patterns
+# - Validation across regime transition
+# - Testing in current bull market
+
+TRAIN_START = "2021-01-01"
+TRAIN_END = "2023-01-01"
+VAL_START = "2023-01-01"
+VAL_END = "2024-01-01"
+TEST_START = "2024-01-01"
 TEST_END = "2024-04-01"
 
 # Trading parameters
