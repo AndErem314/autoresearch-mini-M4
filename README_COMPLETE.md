@@ -168,15 +168,16 @@ Performance Metrics → Keep/Revert Decision
 - **Testing**: Mar 2024 - Apr 2024 (1 month) ← **Final evaluation**
 
 ### Data Source:
-- **Symbol**: BTC-USD
+- **Symbol**: BTCUSDT (Binance)
 - **Interval**: 4-hour charts
+- **Source**: Binance API (no API key needed for historical data)
 - **Cache**: `~/.cache/autoresearch-trading/`
 - **Updates**: Run `python prepare_trading.py --update`
 
 ## 🔧 Technical Details
 
 ### Dependencies:
-- `yfinance` - BTC data download
+- `python-binance` - Binance API for crypto data
 - `ta` - Technical indicator calculation
 - `pandas/numpy` - Data manipulation
 - `scikit-learn` - Optional ML features

@@ -55,11 +55,12 @@ python prepare_trading.py         # Full dataset (Nov 2021 - Mar 2024)
 - **Mac Mini M4 optimized**
 
 ## 📊 Trading Data
-- **Symbol**: BTC-USD (Bitcoin/US Dollar)
+- **Symbol**: BTCUSDT (Bitcoin/Tether on Binance)
 - **Interval**: 4-hour charts
 - **Period**: Nov 2021 - Mar 2024
 - **Splits**: Train (2y), Validation (4m), Test (1m)
 - **Cache**: `~/.cache/autoresearch-trading/`
+- **API**: Binance (no API key needed for historical data)
 
 ## 🎯 Optimization Goal
 Maximize **Sharpe Ratio** with constraints:

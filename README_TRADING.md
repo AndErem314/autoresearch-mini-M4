@@ -35,10 +35,11 @@ Use autonomous AI research loops to find optimal trading strategy configurations
 - **Testing**: Mar 2024 - Apr 2024 (1 month)
 
 ### Data Source
-- **Symbol**: BTC-USD (Bitcoin/US Dollar)
+- **Symbol**: BTCUSDT (Bitcoin/Tether)
 - **Interval**: 4-hour charts
-- **Source**: Yahoo Finance via `yfinance`
+- **Source**: Binance API via `python-binance`
 - **Cache**: Local cache at `~/.cache/autoresearch-trading/`
+- **Advantages**: Real crypto data, no rate limits for historical data, more reliable than Yahoo Finance for crypto
 
 ### Indicators Calculated
 

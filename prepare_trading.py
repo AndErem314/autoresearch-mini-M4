@@ -21,7 +21,8 @@ from typing import Dict, List, Tuple, Optional
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
+from binance.client import Client
+from binance.exceptions import BinanceAPIException
 from ta import add_all_ta_features
 from ta.momentum import RSIIndicator
 from ta.trend import MACD, SMAIndicator, EMAIndicator, IchimokuIndicator
@@ -67,7 +68,7 @@ def download_btc_data(
     force_download: bool = False
 ) -> pd.DataFrame:
     """
-    Download BTC/USDT 4-hour chart data from Yahoo Finance.
+    Download BTC/USDT 4-hour chart data from Binance API.
     
     Args:
         start_date: Start date in YYYY-MM-DD format
@@ -86,24 +87,90 @@ def download_btc_data(
         with open(cache_file, 'rb') as f:
             return pickle.load(f)
     
-    print(f"Downloading BTC/USDT {interval} data from {start_date} to {end_date}...")
+    print(f"Downloading BTC/USDT {interval} data from {start_date} to {end_date} from Binance...")
     
-    # Download data
-    ticker = yf.Ticker("BTC-USD")
-    data = ticker.history(start=start_date, end=end_date, interval=interval)
+    # Initialize Binance client (no API key needed for public data)
+    client = Client()
     
-    if data.empty:
-        raise ValueError(f"No data downloaded for BTC-USD from {start_date} to {end_date}")
+    # Convert interval to Binance format
+    interval_map = {
+        '1h': Client.KLINE_INTERVAL_1HOUR,
+        '4h': Client.KLINE_INTERVAL_4HOUR,
+        '1d': Client.KLINE_INTERVAL_1DAY,
+        '1w': Client.KLINE_INTERVAL_1WEEK,
+    }
     
-    # Ensure proper column names
-    data.columns = [col.lower() for col in data.columns]
+    binance_interval = interval_map.get(interval, Client.KLINE_INTERVAL_4HOUR)
     
-    # Add datetime index if not present
-    if not isinstance(data.index, pd.DatetimeIndex):
-        data.index = pd.to_datetime(data.index)
+    # Convert dates to milliseconds
+    start_ts = int(pd.to_datetime(start_date).timestamp() * 1000)
+    end_ts = int(pd.to_datetime(end_date).timestamp() * 1000)
     
-    print(f"Downloaded {len(data)} rows of {interval} data")
+    # Download data in chunks (Binance has limit of 1000 candles per request)
+    all_klines = []
+    current_start = start_ts
+    
+    while current_start < end_ts:
+        try:
+            klines = client.get_klines(
+                symbol='BTCUSDT',
+                interval=binance_interval,
+                startTime=current_start,
+                endTime=end_ts,
+                limit=1000
+            )
+            
+            if not klines:
+                break
+                
+            all_klines.extend(klines)
+            
+            # Update start time for next batch
+            last_timestamp = klines[-1][0]
+            if last_timestamp <= current_start:
+                break
+            current_start = last_timestamp + 1
+            
+            # Small delay to avoid rate limiting
+            time.sleep(0.1)
+            
+        except BinanceAPIException as e:
+            print(f"Binance API error: {e}")
+            break
+    
+    if not all_klines:
+        raise ValueError(f"No data downloaded for BTCUSDT from {start_date} to {end_date}")
+    
+    # Convert to DataFrame
+    columns = [
+        'timestamp', 'open', 'high', 'low', 'close', 'volume',
+        'close_time', 'quote_asset_volume', 'number_of_trades',
+        'taker_buy_base_volume', 'taker_buy_quote_volume', 'ignore'
+    ]
+    
+    data = pd.DataFrame(all_klines, columns=columns)
+    
+    # Convert types
+    numeric_cols = ['open', 'high', 'low', 'close', 'volume', 
+                    'quote_asset_volume', 'taker_buy_base_volume', 
+                    'taker_buy_quote_volume']
+    for col in numeric_cols:
+        data[col] = pd.to_numeric(data[col])
+    
+    # Convert timestamp to datetime
+    data['timestamp'] = pd.to_datetime(data['timestamp'], unit='ms')
+    data.set_index('timestamp', inplace=True)
+    
+    # Keep only needed columns
+    data = data[['open', 'high', 'low', 'close', 'volume']]
+    
+    # Remove duplicates and sort
+    data = data[~data.index.duplicated(keep='first')]
+    data.sort_index(inplace=True)
+    
+    print(f"Downloaded {len(data)} rows of {interval} data from Binance")
     print(f"Date range: {data.index[0]} to {data.index[-1]}")
+    print(f"Price range: ${data['low'].min():.2f} - ${data['high'].max():.2f}")
     
     # Save to cache
     with open(cache_file, 'wb') as f:

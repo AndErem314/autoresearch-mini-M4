@@ -1,5 +1,5 @@
 # Trading data preparation dependencies
-yfinance>=0.2.38
+python-binance>=1.0.19  # Binance API for crypto data
 pandas>=2.0.0
 numpy>=1.24.0
 ta>=0.10.2
