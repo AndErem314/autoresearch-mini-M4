@@ -1,0 +1,2 @@
+commit_hash	strategy_name	sharpe_ratio	total_return	max_drawdown	win_rate	total_trades	profit_factor	avg_holding_period	backtest_duration	parameters_summary	timestamp
+initial	Ichimoku Cloud Optimizer v1.0	0.000	0.00%	0.00%	0.00%	0	0.00	0.00	0.00	Default parameters	2024-04-04T20:44:00
