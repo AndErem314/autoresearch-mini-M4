@@ -1,91 +1,140 @@
-# autoresearch-mini-M4
+# BTC Trading Strategy Optimizer
 
-**Apple Silicon (MLX) port of [Karpathy's autoresearch](https://github.com/karpathy/autoresearch) with BTC Trading Adaptation**
+**Complete infrastructure for autonomous BTC/USDT trading strategy optimization using Ichimoku Cloud indicators.**
 
-## 🎯 Two Modes Available
+## 🎯 Purpose
 
-### 1. **Original MLX Mode** (Text Generation)
-- Autonomous AI research loops for text generation
-- MLX framework for Apple Silicon native performance
-- Fixed 5-minute training experiments
-- See original files: `train.py`, `prepare.py`, `program.md`
+This repository provides a complete, ready-to-run system for autonomously optimizing BTC trading strategies. It's specifically designed for:
 
-### 2. **Trading Adaptation Mode** (BTC Strategy Optimization) 🆕
-- **BTC/USDT trading strategy optimization using Ichimoku Cloud**
-- **Complete infrastructure for autonomous trading research**
-- **Fixed 5-minute backtesting experiments**
-- **Ready for Mac Mini M4 optimization**
+- **Mac Mini M4 optimization** with one-click setup
+- **Autonomous AI research** with fixed 5-minute experiments
+- **Ichimoku Cloud strategy optimization** for BTC/USDT
+- **Professional backtesting** with 15+ performance metrics
+- **Binance API integration** for reliable crypto data
 
-## 🚀 Quick Start - Trading Mode
+## 🚀 Quick Start
 
 ```bash
-# Clone and setup
+# 1. Clone repository
 git clone https://github.com/AndErem314/autoresearch-mini-M4.git
 cd autoresearch-mini-M4
-git checkout trading-adaptation
 
-# One-click setup
+# 2. Run one-click setup (Mac Mini M4 optimized)
 chmod +x setup_trading.sh
 ./setup_trading.sh
 
-# Prepare BTC data
+# 3. Prepare BTC data
 source venv/bin/activate
 python prepare_trading.py --test  # Test with small dataset
 python prepare_trading.py         # Full dataset (Nov 2021 - Mar 2024)
 
-# Start autonomous research
+# 4. Start autonomous optimization
 # Point your AI agent at program_trading.md
 ```
 
-## 📁 Trading Infrastructure
+## 📁 Project Structure
 
-### Core Files:
-- `prepare_trading.py` - BTC data pipeline with Ichimoku Cloud (50+ indicators)
-- `backtest.py` - Fixed-time backtesting engine (15+ metrics)
-- `strategy.py` - Trading strategy template **(AI agent edits this)**
-- `program_trading.md` - Autonomous research instructions
-- `setup_trading.sh` - Mac Mini M4 setup script
+```
+autoresearch-mini-M4/
+├── 📊 DATA PIPELINE
+│   ├── prepare_trading.py          # Binance BTC data & indicators
+│   ├── requirements_trading.txt    # Python dependencies
+│   └── test_data_pipeline.py       # Pipeline testing
+│
+├── ⚙️ BACKTESTING ENGINE
+│   ├── backtest.py                 # Fixed-time backtesting with metrics
+│   ├── strategy.py                 # Trading strategy template (AI EDITABLE)
+│   └── results_trading.tsv         # Experiment results log
+│
+├── 🤖 AUTONOMOUS RESEARCH
+│   └── program_trading.md          # AI agent instructions
+│
+├── 🛠️ SETUP & UTILITIES
+│   ├── setup_trading.sh            # One-click setup script
+│   ├── SETUP_GUIDE.md              # Detailed setup instructions
+│   ├── README_COMPLETE.md          # Complete infrastructure docs
+│   ├── README_TRADING.md           # Trading-specific documentation
+│   └── .gitignore                  # Git exclusions
+│
+└── 📚 LICENSE                      # MIT License
+```
 
-### Key Features:
-- **Complete Ichimoku Cloud implementation** (19 indicators)
-- **40+ technical indicators** pre-calculated
-- **5-minute fixed-time backtesting** per experiment
-- **Keep/revert logic** based on Sharpe ratio
-- **Git-based experiment tracking**
-- **Mac Mini M4 optimized**
+## 🎯 Core Features
+
+### 1. **Complete Ichimoku Cloud Implementation**
+- All 5 Ichimoku components calculated
+- 19 Ichimoku-derived indicators
+- Customizable periods (Tenkan, Kijun, Senkou B)
+- Cloud position, crosses, and distance metrics
+
+### 2. **Binance API Integration**
+- Real BTC/USDT data from Binance exchange
+- No API key needed for historical data
+- 4-hour chart data (Nov 2021 - Mar 2024)
+- Automatic caching at `~/.cache/autoresearch-trading/`
+
+### 3. **Fixed-Time Backtesting Engine**
+- 5-minute evaluation budget per experiment
+- 15+ performance metrics (Sharpe, Sortino, drawdown, etc.)
+- Realistic trading fees (0.1%) and position sizing
+- Keep/revert logic based on performance
+
+### 4. **Autonomous Research Ready**
+- AI agent instructions in `program_trading.md`
+- Parameter optimization framework
+- Git-based experiment tracking
+- Results logging in TSV format
 
 ## 📊 Trading Data
+
+### Time Periods:
+- **Training**: Nov 2021 - Nov 2023 (2 years)
+- **Validation**: Nov 2023 - Mar 2024 (4 months) ← **Optimization target**
+- **Testing**: Mar 2024 - Apr 2024 (1 month) ← **Final evaluation**
+
+### Data Source:
 - **Symbol**: BTCUSDT (Bitcoin/Tether on Binance)
 - **Interval**: 4-hour charts
-- **Period**: Nov 2021 - Mar 2024
-- **Splits**: Train (2y), Validation (4m), Test (1m)
-- **Cache**: `~/.cache/autoresearch-trading/`
 - **API**: Binance (no API key needed for historical data)
+- **Cache**: `~/.cache/autoresearch-trading/`
 
 ## 🎯 Optimization Goal
-Maximize **Sharpe Ratio** with constraints:
+
+**Primary objective**: Maximize Sharpe Ratio (risk-adjusted returns)
+
+**Secondary constraints** (must all be satisfied):
 - Maximum drawdown < 20%
 - Win rate > 45%
 - Minimum 10 trades
-- Positive expectancy
+- Positive expectancy (> 0)
 
-## 📚 Documentation
-- `README_COMPLETE.md` - Complete infrastructure overview
-- `README_TRADING.md` - Detailed trading documentation
-- `program_trading.md` - AI agent instructions
+## 🔧 Technical Details
+
+### Dependencies:
+- `python-binance` - Binance API for crypto data
+- `ta` - Technical indicator calculation
+- `pandas/numpy` - Data manipulation
+- `scikit-learn` - Optional ML features
+
+### File Descriptions:
+
+| File | Purpose | Editable by AI? |
+|------|---------|-----------------|
+| `prepare_trading.py` | Data pipeline | No |
+| `backtest.py` | Backtesting engine | No |
+| `strategy.py` | Trading logic | **YES** |
+| `program_trading.md` | Agent instructions | No |
+| `results_trading.tsv` | Experiment log | No |
 
 ## 🍎 Mac Mini M4 Advantages
+
 1. **Unified Memory** - Handle large datasets without GPU limits
 2. **Energy Efficient** - Run 24/7 optimization loops
 3. **Local & Private** - Your strategies stay on your machine
-4. **MLX Ready** - Can integrate Apple's ML framework
-
-## 🔧 Requirements
-- Apple Silicon Mac (M1/M2/M3/M4)
-- Python 3.10+
-- Virtual environment (auto-created by setup script)
+4. **Ready for MLX** - Can integrate Apple's ML framework later
 
 ## 📈 Expected Workflow
+
 1. AI agent edits `strategy.py` parameters/rules
 2. 5-minute backtest on validation data
 3. Calculate Sharpe ratio and constraints
@@ -93,24 +142,48 @@ Maximize **Sharpe Ratio** with constraints:
 5. If not: `git checkout strategy.py` (revert)
 6. Repeat overnight for autonomous optimization
 
-## 🆕 What's New in Trading Adaptation
-- **Complete BTC data pipeline** with Yahoo Finance integration
-- **Ichimoku Cloud optimization** framework
-- **Professional backtesting engine** with realistic assumptions
-- **Autonomous research program** for AI agents
-- **Mac Mini M4 optimized setup**
+## 🚨 Important Notes
 
-## ⚠️ Note
-The original MLX text generation code is preserved in:
-- `prepare.py` (original)
-- `train.py` (original)
-- `program.md` (original)
-- `README_ORIGINAL.md` (coming soon)
+1. **Time Budget**: Each experiment limited to 5 minutes wall clock
+2. **Validation Only**: Optimize on validation data, not test data
+3. **Realistic Assumptions**: 0.1% trading fees, 4-hour execution
+4. **Overfitting Risk**: Watch for win rates > 70% (may be overfitting)
+5. **Git Workflow**: All changes tracked via git commits
+
+## 📚 Documentation
+
+- `README_COMPLETE.md` - Complete infrastructure overview
+- `README_TRADING.md` - Detailed trading documentation
+- `SETUP_GUIDE.md` - Step-by-step setup instructions
+- `program_trading.md` - AI agent instructions
+
+## 🆘 Troubleshooting
+
+### Common Issues:
+
+1. **Data download fails**:
+   ```bash
+   python prepare_trading.py --test --update
+   ```
+
+2. **Indicator calculation errors**:
+   ```bash
+   pip install --upgrade ta pandas
+   ```
+
+3. **Memory issues on Mac Mini**:
+   - Reduce dataset size in `prepare_trading.py`
+   - Use `--test` flag for development
+
+4. **Backtest too slow**:
+   - Reduce `time_budget` in `BacktestEngine`
+   - Use smaller validation dataset
 
 ## 📞 Support
+
 - **GitHub Issues**: https://github.com/AndErem314/autoresearch-mini-M4/issues
-- **Trading Docs**: See `README_TRADING.md` and `README_COMPLETE.md`
+- **Documentation**: See `README_TRADING.md` for detailed trading docs
 
 ---
 
-**Ready for autonomous BTC trading strategy optimization on your Mac Mini M4!** 🚀
+**Your complete BTC/Ichimoku trading strategy optimization infrastructure is ready!** 🚀

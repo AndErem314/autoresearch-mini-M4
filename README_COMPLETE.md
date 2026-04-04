@@ -1,15 +1,15 @@
-# Complete Trading Autoresearch Infrastructure
+# Complete BTC Trading Strategy Optimization Infrastructure
 
 ## 🚀 What's Included
 
-This repository now contains a **complete trading strategy optimization system** for BTC/USDT using Ichimoku Cloud indicators, ready for autonomous AI research on your Mac Mini M4.
+This repository contains a **complete trading strategy optimization system** for BTC/USDT using Ichimoku Cloud indicators, ready for autonomous AI research on your Mac Mini M4.
 
 ## 📁 Project Structure
 
 ```
 autoresearch-mini-M4/
 ├── 📊 DATA PIPELINE
-│   ├── prepare_trading.py          # BTC data download & indicator calculation
+│   ├── prepare_trading.py          # Binance BTC data & indicator calculation
 │   ├── requirements_trading.txt    # Python dependencies
 │   └── test_data_pipeline.py       # Pipeline testing
 │
@@ -25,14 +25,21 @@ autoresearch-mini-M4/
 │   ├── setup_trading.sh            # One-click setup script
 │   ├── README_COMPLETE.md          # This file
 │   ├── README_TRADING.md           # Detailed trading documentation
+│   ├── SETUP_GUIDE.md              # Step-by-step setup guide
 │   └── .gitignore                  # Git exclusions
 │
-└── 📚 ORIGINAL MLX CODE (preserved)
-    ├── prepare.py                  # Original text data prep
-    ├── train.py                    # Original ML training
-    ├── program.md                  # Original AI program
-    └── README.md                   # Original documentation
+└── 📚 LICENSE                      # MIT License
 ```
+
+## 🎯 Purpose
+
+This is a **specialized BTC trading strategy optimization system** designed for:
+
+- **Autonomous AI research** with fixed 5-minute experiments
+- **Ichimoku Cloud strategy optimization** for BTC/USDT
+- **Professional backtesting** with 15+ performance metrics
+- **Mac Mini M4 optimization** with one-click setup
+- **Binance API integration** for reliable crypto data
 
 ## 🎯 Core Features
 
@@ -68,7 +75,6 @@ autoresearch-mini-M4/
 # Clone your repository
 git clone https://github.com/AndErem314/autoresearch-mini-M4.git
 cd autoresearch-mini-M4
-git checkout trading-adaptation
 
 # Run setup script
 chmod +x setup_trading.sh
@@ -87,18 +93,7 @@ python prepare_trading.py --test
 python prepare_trading.py
 ```
 
-### Step 3: Test Strategy
-```bash
-# Test the default Ichimoku strategy
-python -c "
-import sys
-sys.path.insert(0, '.')
-from strategy import test_strategy
-test_strategy()
-"
-```
-
-### Step 4: Start Autonomous Research
+### Step 3: Start Autonomous Research
 Point your AI agent (Claude Code, etc.) at `program_trading.md` and let it run experiments overnight.
 
 ## 📈 Trading Strategy Optimization
@@ -132,7 +127,7 @@ PARAMETERS = {
 
 ### Data Flow:
 ```
-BTC 4h Data (Yahoo Finance)
+BTC 4h Data (Binance API)
         ↓
 [prepare_trading.py] → Download & calculate 50+ indicators
         ↓
@@ -168,9 +163,8 @@ Performance Metrics → Keep/Revert Decision
 - **Testing**: Mar 2024 - Apr 2024 (1 month) ← **Final evaluation**
 
 ### Data Source:
-- **Symbol**: BTCUSDT (Binance)
+- **Symbol**: BTCUSDT (Bitcoin/Tether on Binance)
 - **Interval**: 4-hour charts
-- **Source**: Binance API (no API key needed for historical data)
 - **Cache**: `~/.cache/autoresearch-trading/`
 - **Updates**: Run `python prepare_trading.py --update`
 
@@ -289,8 +283,7 @@ After initial optimization:
 
 - **GitHub Issues**: https://github.com/AndErem314/autoresearch-mini-M4/issues
 - **Documentation**: See `README_TRADING.md` for detailed trading docs
-- **Original Code**: Preserved in original files for reference
 
 ---
 
-**Your trading autoresearch infrastructure is now complete and ready for autonomous optimization on your Mac Mini M4!** 🚀
+**Your complete BTC trading strategy optimization infrastructure is ready for autonomous optimization on your Mac Mini M4!** 🚀
