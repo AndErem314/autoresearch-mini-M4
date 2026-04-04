@@ -246,13 +246,17 @@ def prepare_data_splits(df: pd.DataFrame) -> Dict[str, pd.DataFrame]:
     Returns:
         Dictionary with train, val, test DataFrames
     """
-    # Convert date strings to datetime
-    train_start = pd.to_datetime(TRAIN_START)
-    train_end = pd.to_datetime(TRAIN_END)
-    val_start = pd.to_datetime(VAL_START)
-    val_end = pd.to_datetime(VAL_END)
-    test_start = pd.to_datetime(TEST_START)
-    test_end = pd.to_datetime(TEST_END)
+    # Convert date strings to datetime with timezone awareness
+    train_start = pd.to_datetime(TRAIN_START, utc=True)
+    train_end = pd.to_datetime(TRAIN_END, utc=True)
+    val_start = pd.to_datetime(VAL_START, utc=True)
+    val_end = pd.to_datetime(VAL_END, utc=True)
+    test_start = pd.to_datetime(TEST_START, utc=True)
+    test_end = pd.to_datetime(TEST_END, utc=True)
+    
+    # Ensure df index is timezone-aware (UTC)
+    if df.index.tz is None:
+        df = df.tz_localize('UTC', ambiguous='infer', nonexistent='shift_forward')
     
     # Create splits
     train_data = df[(df.index >= train_start) & (df.index < train_end)].copy()

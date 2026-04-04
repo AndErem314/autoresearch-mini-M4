@@ -22,7 +22,7 @@ def test_data_pipeline():
         data = download_btc_data(
             start_date="2024-01-01",
             end_date="2024-01-10",
-            interval="4h",
+            interval="1d",  # Use daily data for testing
             force_download=False
         )
         
@@ -43,9 +43,22 @@ def test_data_pipeline():
         print("\n3. Testing data splits...")
         # Temporarily modify constants for test
         import prepare_trading
-        original_train_end = prepare_trading.TRAIN_END
-        prepare_trading.TRAIN_END = "2024-01-05"
-        prepare_trading.VAL_END = "2024-01-08"
+        original_constants = {
+            'TRAIN_START': prepare_trading.TRAIN_START,
+            'TRAIN_END': prepare_trading.TRAIN_END,
+            'VAL_START': prepare_trading.VAL_START,
+            'VAL_END': prepare_trading.VAL_END,
+            'TEST_START': prepare_trading.TEST_START,
+            'TEST_END': prepare_trading.TEST_END
+        }
+        
+        # Set test dates within our downloaded range
+        prepare_trading.TRAIN_START = "2024-01-01"
+        prepare_trading.TRAIN_END = "2024-01-04"
+        prepare_trading.VAL_START = "2024-01-04"
+        prepare_trading.VAL_END = "2024-01-07"
+        prepare_trading.TEST_START = "2024-01-07"
+        prepare_trading.TEST_END = "2024-01-10"
         
         splits = prepare_data_splits(data_with_indicators)
         
@@ -54,7 +67,8 @@ def test_data_pipeline():
         print(f"   ✓ Test data: {len(splits['test'])} rows")
         
         # Restore original constants
-        prepare_trading.TRAIN_END = original_train_end
+        for key, value in original_constants.items():
+            setattr(prepare_trading, key, value)
         
         # 4. Check specific Ichimoku calculations
         print("\n4. Verifying Ichimoku calculations...")
