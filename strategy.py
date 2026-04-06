@@ -11,6 +11,7 @@ Keep the same function signatures but modify the logic.
 """
 
 import numpy as np
+import pandas as pd
 from typing import List, Optional
 from backtest import TradeAction, TradingSignal, Position
 
@@ -155,12 +156,13 @@ def generate_signals(
         else:
             buy_conditions.append(False)
     
-    # 7. Volume filter
+    # 7. Volume filter — check if current volume is > 0 (basic activity check)
+    # TODO: data pipeline doesn't pre-calculate volume_20_avg, so use simple check
     if params['require_volume_above_avg']:
-        volume_ratio = current_row.get('volume', 0) / current_row.get('volume', 1).rolling(20).mean().iloc[-1]
-        if volume_ratio > 1.0:
+        vol = current_row.get('volume', 0)
+        if vol > 0:
             buy_conditions.append(True)
-            buy_reasons.append("Volume above average")
+            buy_reasons.append("Volume present")
         else:
             buy_conditions.append(False)
     
@@ -321,12 +323,6 @@ def _evaluate_parameter_set(df: 'pd.DataFrame', params: dict) -> float:
     score += above_cloud * 5
     
     return score
-
-# ---------------------------------------------------------------------------
-# Required imports (don't remove)
-# ---------------------------------------------------------------------------
-
-import pandas as pd
 
 # ---------------------------------------------------------------------------
 # Test function
