@@ -108,6 +108,55 @@ autoresearch-mini-M4/
 - Minimum 10 trades
 - Positive expectancy (> 0)
 
+## 🧠 Strategy Options Under Consideration
+
+The following 4 approaches are planned for the next implementation phase. These represent different ways the AI agent could modify `strategy.py` to generate trade signals.
+
+### Option 1: Voting System (recommended)
+
+Instead of "ALL filters must be true", each indicator casts a vote:
+- Price above cloud = +1
+- Tenkan > Kijun = +1
+- RSI in range = +1
+- MACD bullish = +1
+- Chikou above price = +1
+- Volume above avg = +1
+- **Enter when score >= threshold** (e.g., 4 out of 6)
+
+**Why this is better:** Captures partial alignment — if 4 out of 6 indicators agree, that's a meaningful signal even if the other 2 disagree. The threshold itself becomes an optimizable parameter.
+
+### Option 2: Trend + Pullback Entry
+
+Classic professional approach:
+- First confirm trend (price in cloud region, tenkan > kijun)
+- Don't enter on the initial cross — wait for pullback (RSI dips to 35-45, then bounces back above 50)
+- Enter on the bounce, not the cross
+- Exit when trend reverses (death cross) or trailing stop hits
+
+**Key difference:** Separates trend identification from entry timing. Most amateur strategies buy the cross — this waits for the pullback within the trend.
+
+### Option 3: Breakout with Volume Confirmation
+
+- Enter ONLY when price breaks above the cloud boundary with a volume spike (>1.5x average)
+- Tight stop loss just below the cloud
+- Quick exits (take profit at 2-3x risk, or trend reversal)
+- Fewer trades, but higher quality
+
+**Why it works:** The Ichimoku cloud is a support/resistance zone. A breakout from it is a structural shift.
+
+### Option 4: Regime Detection
+
+- First classify: is BTC trending or ranging? (by cloud width or ADX)
+- In trending mode: use trend-following rules
+- In ranging mode: use mean-reversion rules (buy oversold near cloud bottom)
+- Switch between strategies dynamically
+
+**The problem it solves:** BTC alternates between trending and sideways. A regime detector avoids using a trend-following setup in a choppy market.
+
+---
+
+> **Next step:** Pick one (or combine) and implement in `strategy.py`.
+
 ## 🔧 Technical Details
 
 ### Dependencies:
